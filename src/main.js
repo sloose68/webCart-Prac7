@@ -42,7 +42,7 @@ class MyMap {
         geometry: { type: "point", longitude: 138.6050, latitude: -34.9200 },
         attributes: {
           ObjectID: 2,
-          Category: "Second Marker",
+          Category: "River Torrens",
           ImageUrl: "",
           Description: "This is a second location with a distinct symbol."
         }
@@ -81,7 +81,7 @@ class MyMap {
             label: "Adelaide City Centre"
           },
           {
-            value: "Second Marker",
+            value: "River Torrens",
             symbol: {
               type: "simple-marker",
               color: "red",
