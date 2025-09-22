@@ -11,7 +11,15 @@ class ArcGISMap extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
-    this.shadowRoot.innerHTML = `<style>#viewDiv { height: 100vh; }</style><div id="viewDiv"></div>`;
+    this.shadowRoot.innerHTML = `
+  <link rel="stylesheet"
+        href="https://js.arcgis.com/4.29/esri/themes/light/main.css">
+  <style>
+    #viewDiv { height: 100vh; width: 100%; }
+  </style>
+  <div id="viewDiv"></div>
+`;
+
   }
 
   connectedCallback() {
