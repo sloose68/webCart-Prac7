@@ -7,6 +7,8 @@ import Graphic from "@arcgis/core/Graphic";
 import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
 import SimpleMarkerSymbol from "@arcgis/core/symbols/SimpleMarkerSymbol";
 
+import esriCSS from 'https://js.arcgis.com/4.29/esri/themes/light/main.css?inline';
+
 class ArcGISMap extends HTMLElement {
   constructor() {
     super();
@@ -15,6 +17,7 @@ class ArcGISMap extends HTMLElement {
   <link rel="stylesheet"
         href="https://js.arcgis.com/4.29/esri/themes/light/main.css">
   <style>
+    ${esriCSS}
     #viewDiv { height: 100vh; width: 100%; }
   </style>
   <div id="viewDiv"></div>
