@@ -7,17 +7,12 @@ import Graphic from "@arcgis/core/Graphic";
 import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
 import SimpleMarkerSymbol from "@arcgis/core/symbols/SimpleMarkerSymbol";
 
-import esriCSS from 'https://js.arcgis.com/4.29/esri/themes/light/main.css?inline';
-
 class ArcGISMap extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
     this.shadowRoot.innerHTML = `
-  <link rel="stylesheet"
-        href="https://js.arcgis.com/4.29/esri/themes/light/main.css">
   <style>
-    ${esriCSS}
     #viewDiv { height: 100vh; width: 100%; }
   </style>
   <div id="viewDiv"></div>
@@ -27,11 +22,12 @@ class ArcGISMap extends HTMLElement {
 
   connectedCallback() {
     const map = new Map({ basemap: "streets-navigation-vector" });
+    const zoom = Number(this.getAttribute("zoom")) || 10;
     const view = new MapView({
       container: this.shadowRoot.querySelector("#viewDiv"),
       map: map,
       center: [138.6007, -34.9285],
-      zoom: 12
+      zoom: zoom
     });
     
     const graphicsLayer = new GraphicsLayer();

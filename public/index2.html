@@ -7,7 +7,17 @@
   </head>
   <body>
     <h1>Here we are</h1>
-    <arcgis-map></arcgis-map>
+    <arcgis-map zoom="12"></arcgis-map>
+    <script>
+      // grab the zoom parameter from the URL
+      const params = new URLSearchParams(window.location.search);
+      const zoom = params.get("zoom");
+  
+      if (zoom) {
+        // set it as an attribute on the element
+        document.querySelector("arcgis-map").setAttribute("zoom", zoom);
+      }
+    </script>
     <script type="module" src="src/main2.js"></script>
   </body>
 </html>
