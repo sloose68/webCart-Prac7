@@ -17,7 +17,7 @@ class MyMap {
       container: this.containerId,
       map: map,
       center: [138.6007, -34.9285],
-      zoom: 11
+      zoom: 10
     });
 
     view.when(() => {
