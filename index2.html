@@ -4,10 +4,22 @@
     <meta charset="UTF-8" />
     <title>ArcGIS Map Components</title>
     <link rel="stylesheet" href="https://js.arcgis.com/4.29/esri/themes/light/main.css" />
+    <script type="module" crossorigin src="/webCart-Prac7/assets/second-CAMrJBS9.js"></script>
+    <link rel="modulepreload" crossorigin href="/webCart-Prac7/assets/ScaleRangeLayer-CkcnxI7v.js">
+    <link rel="modulepreload" crossorigin href="/webCart-Prac7/assets/GraphicsLayer-C2RpHQKq.js">
   </head>
   <body>
-    <h1>Here we are</h1>
-    <arcgis-map></arcgis-map>
-    <script type="module" src="src/main2.js"></script>
+    <h1>Web Components Version</h1>
+    <arcgis-map zoom="12"></arcgis-map>
+    <script>
+      // grab the zoom parameter from the URL
+      const params = new URLSearchParams(window.location.search);
+      const zoom = params.get("zoom");
+  
+      if (zoom) {
+        // set it as an attribute on the element
+        document.querySelector("arcgis-map").setAttribute("zoom", zoom);
+      }
+    </script>
   </body>
 </html>
