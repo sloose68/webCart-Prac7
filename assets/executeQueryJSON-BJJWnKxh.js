@@ -1,1 +1,0 @@
-import{b3 as m,aT as e}from"./ScaleRangeLayer-CkcnxI7v.js";import{c as s}from"./query-DkqYP_IY.js";import{g as p}from"./FeatureSet-CvltAc3o.js";async function S(r,a,o,t){const n=await u(r,a,o,t);return p.fromJSON(n)}async function u(r,a,o,t){const n=m(r),f={...o},c=e.from(a),{data:i}=await s(n,c,c.sourceSpatialReference,f,t);return i}export{u as a,S as s};
