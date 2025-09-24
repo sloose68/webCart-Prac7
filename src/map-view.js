@@ -1,71 +1,87 @@
+// src/map-view.js
 import Map from "@arcgis/core/Map";
 import MapView from "@arcgis/core/views/MapView";
+import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import BasemapToggle from "@arcgis/core/widgets/BasemapToggle";
 import ScaleBar from "@arcgis/core/widgets/ScaleBar";
 import Legend from "@arcgis/core/widgets/Legend";
-import Graphic from "@arcgis/core/Graphic";
-import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
-import SimpleMarkerSymbol from "@arcgis/core/symbols/SimpleMarkerSymbol";
 
 class ArcGISMap extends HTMLElement {
   constructor() {
     super();
-    this.attachShadow({ mode: "open" });
-    this.shadowRoot.innerHTML = `
-  <style>
-    #viewDiv { height: 100vh; width: 100%; }
-  </style>
-  <div id="viewDiv"></div>
-`;
 
+    // Light DOM container (needed for ArcGIS widgets)
+    this.mapContainer = document.createElement("div");
+    this.mapContainer.id = "viewDiv";
+    this.mapContainer.style.width = "100%";
+    this.mapContainer.style.height = "90vh"; // fill viewport
+    this.appendChild(this.mapContainer);
   }
 
   connectedCallback() {
+    const zoom = Number(this.getAttribute("zoom")) || 12;
+
     const map = new Map({ basemap: "streets-navigation-vector" });
-    const zoom = Number(this.getAttribute("zoom")) || 10;
     const view = new MapView({
-      container: this.shadowRoot.querySelector("#viewDiv"),
+      container: this.mapContainer,
       map: map,
       center: [138.6007, -34.9285],
       zoom: zoom
     });
-    
-    const graphicsLayer = new GraphicsLayer();
-    map.add(graphicsLayer);
 
-    view.when(() => {
-      view.ui.add(new BasemapToggle({ view, nextBasemap: "satellite" }), "bottom-right");
-      view.ui.add(new ScaleBar({ view, unit: "metric" }), "bottom-left");
-      view.ui.add(new Legend({
-        view,
-        layerInfos: [{ layer: graphicsLayer, title: "Point Markers" }]
-      }), "top-right");
-
-      graphicsLayer.addMany([
-        new Graphic({
+    // Client-side FeatureLayer with two markers
+    const featureLayer = new FeatureLayer({
+      source: [
+        {
           geometry: { type: "point", longitude: 138.6007, latitude: -34.9285 },
-          symbol: new SimpleMarkerSymbol({ color: "blue", size: 12 }),
+          attributes: { type: "CBD", name: "Adelaide CBD" },
           popupTemplate: {
-            title: "Adelaide CBD",
-            content: `<img src="" width="250"><br>Adelaide CBD!`
-          },
-          popupEnabled: true
-        }),
-        new Graphic({
-          geometry: { type: "point", longitude: 138.6050, latitude: -34.9200 },
-          symbol: new SimpleMarkerSymbol({ color: "red", size: 14, style: "diamond" }),
-          popupTemplate: {
-            title: "Second Marker",
-            content: "This is a second location with a distinct symbol."
+            title: "{name}",
+            content: "<h3>{type}</h3><p>Adelaide CBD content goes here.</p>"
           }
-        })
-      ]);
+        },
+        {
+          geometry: { type: "point", longitude: 138.78360, latitude: -34.92896 },
+          attributes: { type: "Home", name: "Home Location" },
+          popupTemplate: {
+            title: "{name}",
+            content: "<p>This is my home location.</p>"
+          }
+        },
+        {
+          geometry: { type: "point", longitude: 138.594, latitude: -34.919 },
+          attributes: { type: "River", name: "River Torrens" },
+          popupTemplate: {
+            title: "{name}",
+            content: '<img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Adelaide_-_SA_%2825091207887%29.jpg" width="250"><br>River Torrens'
+          }
+        }
+      ],
+      objectIdField: "ObjectID",
+      fields: [
+        { name: "ObjectID", type: "oid" },
+        { name: "type", type: "string" },
+        { name: "name", type: "string" }
+      ],
+      renderer: {
+        type: "unique-value",
+        field: "type",
+        uniqueValueInfos: [
+          { value: "CBD", symbol: { type: "simple-marker", color: "blue", size: 12 }, label: "CBD" },
+          { value: "Home", symbol: { type: "simple-marker", color: "red", size: 14, style: "diamond" }, label: "Home" },
+          { value: "River", symbol: { type: "simple-marker", color: "green", size: 12 }, label: "River Torrens" }
+        ]
+      }
     });
-    this.shadowRoot.querySelector("#viewDiv").addEventListener("contextmenu", (e) => {
-      e.stopPropagation();
-      // Do NOT call e.preventDefault()
-    });
+
+    map.add(featureLayer);
+
+    // Add widgets
+    view.ui.add(new BasemapToggle({ view, nextBasemap: "satellite" }), "bottom-right");
+    view.ui.add(new ScaleBar({ view, unit: "metric" }), "bottom-left");
+    view.ui.add(new Legend({ view, layerInfos: [{ layer: featureLayer, title: "Points of Interest" }] }), "top-right");
   }
 }
 
+// Define custom element
 customElements.define("arcgis-map", ArcGISMap);

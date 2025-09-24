@@ -1,23 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>ArcGIS Map Components</title>
-    <link rel="stylesheet" href="https://js.arcgis.com/4.29/esri/themes/light/main.css" />
-  </head>
-  <body>
-    <h1>Web Components Version</h1>
-    <arcgis-map zoom="12"></arcgis-map>
-    <script>
-      // grab the zoom parameter from the URL
-      const params = new URLSearchParams(window.location.search);
-      const zoom = params.get("zoom");
-  
-      if (zoom) {
-        // set it as an attribute on the element
-        document.querySelector("arcgis-map").setAttribute("zoom", zoom);
-      }
-    </script>
-    <script type="module" src="src/main2.js"></script>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <title>ArcGIS Web Component Example</title>
+  <link rel="stylesheet" href="src/mapstyle.css">
+  <link rel="stylesheet" href="https://js.arcgis.com/4.29/esri/themes/light/main.css">
+</head>
+<body>
+  <h1>ArcGIS Web Component Map</h1>
+  <arcgis-map zoom="11"></arcgis-map>
+  <script type="module" src="./src/map-view.js"></script>
+</body>
 </html>
